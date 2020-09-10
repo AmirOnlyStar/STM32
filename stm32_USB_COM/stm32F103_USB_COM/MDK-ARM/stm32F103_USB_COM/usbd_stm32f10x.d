@@ -1,0 +1,17 @@
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\RTE_Driver\USBD_STM32F10x.c
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stm32f103_usb_com\usbd_stm32f10x.o: .\RTE\_stm32F103_USB_COM\RTE_Components.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include\stm32f10x.h
+stm32f103_usb_com\usbd_stm32f10x.o: ../Drivers/CMSIS/Include/core_cm3.h
+stm32f103_usb_com\usbd_stm32f10x.o: ../Drivers/CMSIS/Include/cmsis_version.h
+stm32f103_usb_com\usbd_stm32f10x.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+stm32f103_usb_com\usbd_stm32f10x.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include\system_stm32f10x.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\RTE_Driver\GPIO_STM32F10x.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\RTE_Driver\USBD_STM32F10x.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_USBD.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_USB.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Users\Amir\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_Common.h
+stm32f103_usb_com\usbd_stm32f10x.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
