@@ -3,7 +3,6 @@
 int main(void)
 {
 
-	
 	/**************************** 72 MHz**************************/
 	//turn on external crystal
 	RCC->CR |= RCC_CR_HSEON;
@@ -66,7 +65,7 @@ int main(void)
 //		for(int i =0 ;i < 500000;i++);
 		
 		GPIOC->ODR ^= (1<<13);
-		for(long int i =0 ;i <500000;i++);
+		//for(long int i =0 ;i <500000;i++);
 		//GPIOC->ODR = 1 << 13;
 		//GPIOC->ODR = 0;
 	}	
