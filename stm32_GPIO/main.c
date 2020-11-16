@@ -47,7 +47,7 @@ int main(void)
 //  while (!(RCC->CFGR & RCC_CFGR_SWS_HSE));
 /******************************************************/
 
-	SystemCoreClockUpdate();
+//	SystemCoreClockUpdate();
 //	SysTick_Config(SystemCoreClock/1000);
 	
 	
@@ -59,15 +59,20 @@ int main(void)
 	
 	while(1)
 	{
-//		GPIOC->BSRR = (1<<13);
+		//GPIOC->BSRR = (1<<13);
+//		GPIOC->BSRR = (8192);
 //		for(int i =0 ;i < 500000;i++);
 //		GPIOC->BSRR = (1<<(13+16));
+//		GPIOC->BSRR = (536870912);
+//		GPIOC->BSRR = (8192);
+//		GPIOC->BSRR = (536870912);
+//		GPIOC->BSRR = (8192);
+//		GPIOC->BSRR = (536870912);
 //		for(int i =0 ;i < 500000;i++);
 		
 		GPIOC->ODR ^= (1<<13);
-		//for(long int i =0 ;i <500000;i++);
-		//GPIOC->ODR = 1 << 13;
-		//GPIOC->ODR = 0;
+
+	__nop();
 	}	
 	
 
