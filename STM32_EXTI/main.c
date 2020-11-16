@@ -2,6 +2,7 @@
 
 /*EXTERnal interupt test*/
 /*STM32F103C8T6 run at 8 MHz and PINC13 OUTPUT and PINC14 interupt INPUT  */
+/*end of startup_stm32f10x.h IRQ handeler exist*/
 
 int main()
 {
