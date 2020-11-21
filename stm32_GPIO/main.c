@@ -72,7 +72,7 @@ int main(void)
 		
 		GPIOC->ODR ^= (1<<13);
 
-	__nop();
+	//__nop();
 	}	
 	
 

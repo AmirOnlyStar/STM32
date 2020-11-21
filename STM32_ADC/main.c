@@ -1,4 +1,8 @@
 #include "stm32f10x.h"
+unsigned long int msTicks;
+
+void delayMs(int ms);
+
 
 int main()
 {
@@ -44,6 +48,15 @@ int main()
 	
 }
 
-
+void delayMs(int ms)
+{
+	msTicks = 0;
+	while(msTicks < ms);
+}
+		 
+void SysTick_Handler(void)
+{
+	msTicks++;
+}
 
 
