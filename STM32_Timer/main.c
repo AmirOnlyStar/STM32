@@ -39,12 +39,22 @@ USART1 -> CR1 |= USART_CR1_UE;
 	GPIOB->CRH |= GPIO_CRH_MODE9_0 | GPIO_CRH_MODE9_1 | GPIO_CRH_CNF9_1; 
 	GPIOB->CRH &= ~(GPIO_CRH_CNF9_0);
 	
+<<<<<<< HEAD
+	//PWM freq = Fclk/PSC/ARR
+	//PWM Duty = CCR4/ARR
+	
+	TIM4->PSC = 65535;
+	TIM4->ARR = 6000;
+//	TIM4->CR1 |= TIM_CR1_CEN | TIM_CR1_DIR;
+	TIM4->CR1 |= TIM_CR1_CEN;
+=======
 	TIM4->PSC = 65535; /*PRESCALER*/
 	TIM4->ARR = 6000;  /*Auto Reload Register reach to this */
 //	TIM4->CR1 |=  TIM_CR1_DIR; /*0 UP counter & 1 DOWN counter*/
 	TIM4->CR1 |= TIM_CR1_CEN; /*Counter enable*/
 	
 	/*Center-aligned mode selection*/
+>>>>>>> f8ec9de3dff68fa1f50de6f53377540caf460572
 //	TIM4->CR1 |= TIM_CR1_CMS_0;
 //	TIM4->CR1 &= ~TIM_CR1_CMS_1;
 	
