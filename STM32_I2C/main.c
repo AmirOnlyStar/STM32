@@ -1,13 +1,16 @@
 #include "stm32f10x.h"
 
+#define BUFFLEN 20
+
+volatile uint32_t msTicks = 0;   
+
+uint8_t i2c_buff[BUFFLEN];
 
 int main()
 {
+	SystemCoreClockUpdate();
+  SysTick_Config(SystemCoreClock / 1000); 	
 	
-	
-	
-	
-
 }
 
 
@@ -22,7 +25,7 @@ void init_i2c2(void)
 	//NVIC_EnableIRQ(I2C2_EV_IRQn);
 	
 	I2C2->CR2 |= 36; //freq value of APB1 buss = 36
-	/*  
+	/*******************************************************  
 	muu_freq : 72 MHz
 	APB1: 36 MHz
 	TAPB1 = 1/APB1 = 27.7 ns
@@ -31,14 +34,14 @@ void init_i2c2(void)
 	
 	CCR = (Ti2c/2)/TAPB1  = (10 us / 2) / 27.7 ns = 180
 	
-	*/
+	********************************************************/
 	
 	I2C2->CCR |= 180;
 
-	/*
+	/*******************************************************
 	1000 ns / (1 / 36 MHz) => 36 + 1
 	
-	*/
+	*******************************************************/
 	I2C2->TRISE |=37; 
 	I2C2->CR1 |= I2C_CR1_ACK; //enable acks
 	//stretch mode is enable by deffult 
@@ -83,5 +86,46 @@ void i2c_write_single(uint8_t device_address , uint8_t mem_address , uint8_t dat
 	
 }
 
+void i2c_read_single(uint8_t device_address , uint8_t len)
+{
+	uint32_t temp = 0;
+	
+	RCC -> AHBENR |= RCC_AHBENR_DMA1EN;
+	I2C2 ->CR2 |= I2C_CR2_DMAEN;
+	I2C2 ->CR1 |= I2C_CR1_ACK; //enable acks
+	
+	DMA1_Channel5 -> CMAR = (uint32_t)i2c_buff;
+	DMA1_Channel5 -> CPAR = (uint32_t)&I2C2->DR;
+	DMA1_Channel5 -> CNDTR = len;
+	DMA1_Channel5 -> CCR |= DMA_CCR4_TCIE | DMA_CCR5_MINC | DMA_CCR5_EN;//enable i2c2 transfer interupt enable :Memory increment mode
+	
+	I2C2 -> CR1 |= I2C_CR1_START;//generate start condition
+	
+	while(!(I2C2->SR1 & I2C_SR1_SB))
+	{
+	}
+	
+	I2C2 -> DR = device_address +1 ;//write 0xA0
+	while(!(I2C2 -> SR1 & I2C_SR1_ADDR))
+	{
+	}
+	
+	temp = I2C2->SR2;
+	while(!(DMA1->ISR & DMA_ISR_TCIF5) == 0);
+	
+	I2C2->CR1 |= I2C_CR1_STOP;
+	
+	
+}
+void SysTick_Handler(void)
+{
+	msTicks++;
+}
+
+void delayMs(int ms)
+{
+	msTicks = 0;
+	while(msTicks < ms);
+}
 
 
