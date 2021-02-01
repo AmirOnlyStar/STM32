@@ -4,12 +4,25 @@
 
 volatile uint32_t msTicks = 0;   
 
+void init_i2c2(void);
+void i2c_write_single(uint8_t device_address , uint8_t mem_address , uint8_t data);
+void i2c_read_single(uint8_t device_address , uint8_t len);
+
+
 uint8_t i2c_buff[BUFFLEN];
 
 int main()
 {
 	SystemCoreClockUpdate();
   SysTick_Config(SystemCoreClock / 1000); 	
+	
+	init_i2c2();
+	while(1)
+	{
+		i2c_write_single(0xA6,0x00,0x00);
+		i2c_read_single(0xA6,1);
+		__NOP();
+	}
 	
 }
 
@@ -64,18 +77,16 @@ void i2c_write_single(uint8_t device_address , uint8_t mem_address , uint8_t dat
 	
 	I2C2->CR1 |= I2C_CR1_START;//generate start condition
 	//MSTICKS = 0;
-	while(!(I2C2->SR1 & I2C_SR1_SB)) //start condition was sent
-	{
+	while(!(I2C2->SR1 & I2C_SR1_SB)){ //start condition was sent
+	
 	}
 	
 	I2C2->DR = device_address;
-	while(!(I2C2->SR1 & I2C_SR1_ADDR))//address was sent 
-	{
+	while(!(I2C2->SR1 & I2C_SR1_ADDR)){//address was sent 
 	}
 	
 	I2C2->DR = mem_address; //addrress to write to 
-	while(!(I2C2->SR1 & I2C_SR1_TXE))//waite for byte to transfer 
-	{
+	while(!(I2C2->SR1 & I2C_SR1_TXE)){//waite for byte to transfer 
 	}
 	
 	I2C2->DR = data;//data to transfer 
