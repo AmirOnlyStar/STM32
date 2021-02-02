@@ -3,11 +3,13 @@
 #define BUFFLEN 20
 
 volatile uint32_t msTicks = 0;   
-
+uint8_t temp_data = 0;
 void init_i2c2(void);
 void i2c_write_single(uint8_t device_address , uint8_t mem_address , uint8_t data);
-void i2c_read_single(uint8_t device_address , uint8_t len);
+void i2c_read_single_dma(uint8_t device_address , uint8_t len);
+void i2c_read(uint8_t device_address, uint8_t mem_address,	uint8_t data, uint8_t len);
 
+void delayMs(int ms);
 
 uint8_t i2c_buff[BUFFLEN];
 
@@ -17,13 +19,21 @@ int main()
   SysTick_Config(SystemCoreClock / 1000); 	
 	
 	init_i2c2();
+	
+	RCC->APB2ENR |= (RCC_APB2ENR_IOPCEN);/*1<<4)*/
+	GPIOC->CRH |= (GPIO_CRH_MODE13_0)|(GPIO_CRH_MODE13_1);
+	GPIOC->CRH &= ~((GPIO_CRH_CNF13_0)|(GPIO_CRH_CNF13_1));
+	
 	while(1)
 	{
-		i2c_write_single(0xA6,0x00,0x00);
-		i2c_read_single(0xA6,1);
+		GPIOC->ODR ^= (1<<13);
+		delayMs(100);
+		//i2c_read_single_dma(0xA6,0x00);
+		i2c_write_single(0xA6,0x1D,0x02);
+
+//		i2c_read(0xA6,0x1E,&temp_data,3);
 		__NOP();
 	}
-	
 }
 
 
@@ -46,16 +56,15 @@ void init_i2c2(void)
 	Ti2c = 1/i2c  = 10 us 
 	
 	CCR = (Ti2c/2)/TAPB1  = (10 us / 2) / 27.7 ns = 180
-	
 	********************************************************/
 	
 	I2C2->CCR |= 180;
 
 	/*******************************************************
 	1000 ns / (1 / 36 MHz) => 36 + 1
-	
 	*******************************************************/
-	I2C2->TRISE |=37; 
+	
+	I2C2->TRISE |=0x25; 
 	I2C2->CR1 |= I2C_CR1_ACK; //enable acks
 	//stretch mode is enable by deffult 
 	//7 bit adressing mode enable by deffault(not for F1)
@@ -76,14 +85,14 @@ void i2c_write_single(uint8_t device_address , uint8_t mem_address , uint8_t dat
 	uint32_t temp;
 	
 	I2C2->CR1 |= I2C_CR1_START;//generate start condition
-	//MSTICKS = 0;
+
 	while(!(I2C2->SR1 & I2C_SR1_SB)){ //start condition was sent
-	
 	}
 	
 	I2C2->DR = device_address;
 	while(!(I2C2->SR1 & I2C_SR1_ADDR)){//address was sent 
 	}
+	temp = I2C2->SR2;
 	
 	I2C2->DR = mem_address; //addrress to write to 
 	while(!(I2C2->SR1 & I2C_SR1_TXE)){//waite for byte to transfer 
@@ -97,7 +106,7 @@ void i2c_write_single(uint8_t device_address , uint8_t mem_address , uint8_t dat
 	
 }
 
-void i2c_read_single(uint8_t device_address , uint8_t len)
+void i2c_read_single_dma(uint8_t device_address , uint8_t len)
 {
 	uint32_t temp = 0;
 	
@@ -120,14 +129,52 @@ void i2c_read_single(uint8_t device_address , uint8_t len)
 	while(!(I2C2 -> SR1 & I2C_SR1_ADDR))
 	{
 	}
-	
 	temp = I2C2->SR2;
+	
 	while(!(DMA1->ISR & DMA_ISR_TCIF5) == 0);
 	
 	I2C2->CR1 |= I2C_CR1_STOP;
-	
-	
 }
+
+void i2c_read(uint8_t device_address, uint8_t mem_address,	uint8_t data, uint8_t len)
+{
+	uint32_t temp;
+	uint8_t i = 0;
+
+		I2C2->CR1 |= I2C_CR1_START;//generate start condition
+		while(!(I2C2->SR1 & I2C_SR1_SB)){ //start condition was sent
+		}
+
+		I2C2->DR = device_address+0;
+		while(!(I2C2->SR1 & I2C_SR1_ADDR)){//address was sent 
+		}
+		temp = I2C2->SR2;
+
+		I2C2->DR = mem_address; //addrress to write to 
+		while(!(I2C2->SR1 & I2C_SR1_TXE)){//waite for byte to transfer 
+		}
+
+			I2C2->CR1 |= I2C_CR1_START;//generate repeatedstart condition
+			while(!(I2C2->SR1 & I2C_SR1_SB)){ //start condition was sent
+			}
+
+			I2C2->DR = device_address+1;
+			while(!(I2C2->SR1 & I2C_SR1_ADDR)){//address was sent 
+			}
+			temp = I2C2->SR2;
+		for(i = 0 ; i < len ;i++)
+		{
+//			while(!(I2C2->SR1 & I2C_SR1_RXNE)){//address was sent 
+//			}
+			data = I2C2->DR;
+			I2C2->CR1 |= I2C_CR1_ACK;//generate ACK condition
+			while(!(I2C2->SR1 & I2C_SR1_SB)){ //ACK condition was sent
+			}			
+		}
+	
+	I2C2->CR1 |= I2C_CR1_STOP;//send anather start condition to get the data 
+}
+
 void SysTick_Handler(void)
 {
 	msTicks++;

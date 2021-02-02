@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\i2c.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\i2c.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Feb 01 14:27:18 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Feb 02 15:29:25 2021
 <BR><P>
 <H3>Maximum Stack Usage =         28 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -202,8 +202,8 @@ Global Symbols
 <P><STRONG><a name="[73]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[43]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; exit
+<BR><BR>[Stack]<UL><LI>Max Depth = 12 + Unknown Stack Size
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; i2c_write_single
 </UL>
 <BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -480,14 +480,12 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(.text)
 </UL>
-<P><STRONG><a name="[52]"></a>i2c_read_single</STRONG> (Thumb, 160 bytes, Stack size 8 bytes, main.o(i.i2c_read_single))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = i2c_read_single
-</UL>
-<BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<P><STRONG><a name="[51]"></a>delayMs</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, main.o(i.delayMs))
+<BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[51]"></a>i2c_write_single</STRONG> (Thumb, 110 bytes, Stack size 8 bytes, main.o(i.i2c_write_single))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = i2c_write_single
+<P><STRONG><a name="[52]"></a>i2c_write_single</STRONG> (Thumb, 116 bytes, Stack size 12 bytes, main.o(i.i2c_write_single))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = i2c_write_single
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -496,13 +494,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 110 bytes, Stack size 0 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = main &rArr; SystemCoreClockUpdate
+<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 154 bytes, Stack size 0 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = main &rArr; i2c_write_single
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_i2c2
-<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;i2c_write_single
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;i2c_read_single
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;i2c_write_single
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delayMs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
