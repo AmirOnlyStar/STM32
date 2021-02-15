@@ -25,7 +25,7 @@ void serialInit(void)
 {
 	
 RCC -> APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_AFIOEN | RCC_APB2ENR_USART1EN ; //1<<14
-GPIOA -> CRH |= GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9_0 | GPIO_CRH_MODE9_1; //PA9 output open drain 
+GPIOA -> CRH |= GPIO_CRH_CNF9_1 | GPIO_CRH_MODE9_0 | GPIO_CRH_MODE9_1; //PA9 and PA10 Alternate function output Push-pull
 GPIOA -> CRH &= ~(GPIO_CRH_CNF9_0);
 
 //AFO -> MAPR |= AFIO_MAPR_USART1_REMAP; //for remap from (TX/PA9, RX/PA10) to (TX/PB6, RX/PB7)
@@ -35,7 +35,7 @@ GPIOA -> CRH &= ~(GPIO_CRH_CNF9_0);
 //USART1 -> BRR	= 0x1d4c;
 	
 //clkPer / (boudR * 16) = 72MHz / (115200 * 16)
-//468.75   hex(39) = 0x27  hex(0.0625*16) = 0x1 
+//39.0625   hex(39) = 0x27  hex(0.0625*16) = 0x1 
 USART1 -> BRR	= 0x271;
 	
 USART1 -> CR1 |= USART_CR1_TE;
