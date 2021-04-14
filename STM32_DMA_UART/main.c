@@ -15,7 +15,6 @@ uint8_t counter = 0;
 
 int main()
 {
-	
 	uint8_t len = strlen(myString);
 //	uint8_t count = 0;
 	
@@ -75,13 +74,19 @@ int main()
 //		}
 		/**************************************************/
 	}
-
 }
 void DMA1_Channel7_IRQHandler(void)
 {
 //	while((DMA1 ->ISR & DMA_ISR_TCIF7) == 0);
 	DMA1 ->IFCR = DMA_IFCR_CTCIF7;
 //	DMA1_Channel7 -> CCR &=~DMA_CCR7_EN;
+}
+
+void DMA1_Channel6_IRQHandler(void)
+{
+//	while((DMA1 ->ISR & DMA_ISR_TCIF6) == 0);
+	DMA1 ->IFCR = DMA_IFCR_CTCIF6;
+//	DMA1_Channel6 -> CCR &=~DMA_CCR6_EN;
 }
 
 void printMsg(char *msg , ...)
