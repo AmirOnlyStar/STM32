@@ -6,7 +6,6 @@ void uart_init(void);
 
 int main()
 {
-
 	uart_init();
 	
 	while(1)
@@ -18,8 +17,6 @@ int main()
 			while(!(USART1 -> SR & USART_SR_TC));
 		}
 	}
-	
-	
 }
 
 

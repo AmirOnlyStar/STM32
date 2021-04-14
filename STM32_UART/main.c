@@ -30,6 +30,7 @@ GPIOA -> CRH &= ~(GPIO_CRH_CNF9_0);
 
 //AFO -> MAPR |= AFIO_MAPR_USART1_REMAP; //for remap from (TX/PA9, RX/PA10) to (TX/PB6, RX/PB7)
 	
+//FOR APB1 CLK/2	
 //clkPer / (boudR * 16) = 72MHz / (9600 * 16)
 //468.75   hex(468) = 0x1D4  hex(0.75*16) = 0xC 
 //USART1 -> BRR	= 0x1d4c;
