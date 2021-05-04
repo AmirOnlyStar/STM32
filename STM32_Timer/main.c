@@ -13,7 +13,7 @@ void printMsg(char *msg , ...);
 uint8_t counter = 0;
 
 uint32_t val;
-
+uint32_t val_int = 0;;
 int main()
 {
 RCC -> APB2ENR |=  RCC_APB2ENR_IOPBEN |RCC_APB2ENR_IOPAEN | RCC_APB2ENR_AFIOEN | RCC_APB2ENR_USART1EN ; //1<<14
@@ -43,15 +43,22 @@ USART1 -> CR1 |= USART_CR1_UE;
 	//PWM freq = Fclk/PSC/ARR
 	//PWM Duty = CCR4/ARR
 	
-	TIM4->PSC = 65535; /*PRESCALER*/
-	TIM4->ARR = 6000;  /*Auto Reload Register reach to this */
+	TIM4->PSC = 7200; /*PRESCALER max 65535*/
+	TIM4->ARR = 10000;  /*Auto Reload Register reach to this 1Hz */
 //	TIM4->CR1 |=  TIM_CR1_DIR; /*0 UP counter & 1 DOWN counter*/
+
+	TIM4->CR1 |= TIM_CR1_URS;//Update request source
+	TIM4->DIER |= TIM_DIER_UIE; //Update interupt enable
+	TIM4->EGR  |= TIM_EGR_UG; //update generation
+	
 	TIM4->CR1 |= TIM_CR1_CEN; /*Counter enable*/
 	
 	/*Center-aligned mode selection*/
 //>>>>>>> f8ec9de3dff68fa1f50de6f53377540caf460572
 //	TIM4->CR1 |= TIM_CR1_CMS_0;
 //	TIM4->CR1 &= ~TIM_CR1_CMS_1;
+
+	NVIC_EnableIRQ(TIM4_IRQn);/*enable interupt in core_cm3.h*/
 	
 	printMsg("Hi I am Amir %d \r\n",counter);
 	while(1)
@@ -60,7 +67,6 @@ USART1 -> CR1 |= USART_CR1_UE;
 		printMsg("CNT:%d\r\n",val);
 		counter++;
 	}
-	
 }
 void printMsg(char *msg , ...)
 {
@@ -76,6 +82,16 @@ void printMsg(char *msg , ...)
 			while(!( USART1 -> SR & USART_SR_TXE));
 	 	}
 	#endif
+}
+
+void TIM4_IRQHandler (void)
+{
+	if( ( (TIM4 -> SR) & TIM_SR_UIF) ==  TIM_SR_UIF)
+	{
+		val_int++;
+		TIM4->SR &= ~TIM_SR_UIF;
+	}
+
 }
 
 
