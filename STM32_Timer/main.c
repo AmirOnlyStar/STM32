@@ -43,11 +43,6 @@ USART1 -> CR1 |= USART_CR1_UE;
 	//PWM freq = Fclk/PSC/ARR
 	//PWM Duty = CCR4/ARR
 	
-	TIM4->PSC = 65535;
-	TIM4->ARR = 6000;
-//	TIM4->CR1 |= TIM_CR1_CEN | TIM_CR1_DIR;
-	TIM4->CR1 |= TIM_CR1_CEN;
-
 	TIM4->PSC = 65535; /*PRESCALER*/
 	TIM4->ARR = 6000;  /*Auto Reload Register reach to this */
 //	TIM4->CR1 |=  TIM_CR1_DIR; /*0 UP counter & 1 DOWN counter*/
