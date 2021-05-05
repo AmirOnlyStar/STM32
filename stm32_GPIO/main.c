@@ -50,28 +50,27 @@ int main(void)
 //	SystemCoreClockUpdate();
 //	SysTick_Config(SystemCoreClock/1000);
 	
-	
 	RCC->APB2ENR |= (RCC_APB2ENR_IOPCEN);/*1<<4)*/
 //	GPIOC->CRH |= ((1<<20)|(1<<21));
 //	GPIOC->CRH &= ~((1<<22)|(1<<23));
-		GPIOC->CRH |= (GPIO_CRH_MODE13_0)|(GPIO_CRH_MODE13_1);
-		GPIOC->CRH &= ~((GPIO_CRH_CNF13_0)|(GPIO_CRH_CNF13_1));
+		GPIOC->CRH |= (GPIO_CRH_MODE13_0);
+		GPIOC->CRH |= (GPIO_CRH_MODE13_1);
+		GPIOC->CRH &= ~(GPIO_CRH_CNF13_0);
+		GPIOC->CRH &= ~(GPIO_CRH_CNF13_1);
 	
 	while(1)
 	{
-		//GPIOC->BSRR = (1<<13);
-//		GPIOC->BSRR = (8192);
-//		for(int i =0 ;i < 500000;i++);
-//		GPIOC->BSRR = (1<<(13+16));
-//		GPIOC->BSRR = (536870912);
-//		GPIOC->BSRR = (8192);
-//		GPIOC->BSRR = (536870912);
-//		GPIOC->BSRR = (8192);
-//		GPIOC->BSRR = (536870912);
-//		for(int i =0 ;i < 500000;i++);
 		
-		GPIOC->ODR ^= (1<<13);
+		GPIOC->BSRR = (GPIO_BSRR_BS13); //GPIOC->BSRR = (1<<13);
+		for(int i =0 ;i < 500000;i++);
+		GPIOC->BSRR = (GPIO_BSRR_BR13); //GPIOC->BSRR = (1<<(13+16));
+		for(int i =0 ;i < 500000;i++);
+		
 
+//		GPIOC->ODR ^= (GPIO_ODR_ODR13);//		GPIOC->ODR ^= (1<<13);
+//		for(int i =0 ;i < 500000;i++);		
+		
+		
 	//__nop();
 	}	
 	
