@@ -31,7 +31,6 @@ int main()
 	
 	NVIC_EnableIRQ(EXTI15_10_IRQn);/*enable interupt in core_cm3.h*/
 	
-	
 	while(1)
 	{
 	
@@ -40,7 +39,8 @@ int main()
 
 void EXTI15_10_IRQHandler(void)
 {
-  if (EXTI->PR & (1<<14)) 
+//  if (EXTI->PR & (1<<14))
+	if (EXTI->PR & (EXTI_PR_PR14))	
 	{                        // EXTI14 interrupt pending?
     EXTI->PR |= (1<<14);      // clear pending interrupt
 		GPIOC->ODR ^= (1<<13);
